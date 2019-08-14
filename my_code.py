@@ -69,7 +69,7 @@ elif user_info['age'] > 90:
 
     else :#Дал ответ ни Да ни Нет
         pass
-
+      
 else:
     print(' - Рад тебя видеть, '+ user_info['name'] + '! Давай назову буквы алфавита, которых нет в твоем имени:')
     for char_alphabet in alphabet:
@@ -80,4 +80,5 @@ else:
         robot_answer += char_alphabet
     print('   ',robot_answer)
     print('   Это все, чему я научился. Подожди немного и увидишь как я вырасту!')
-
+    
+    
