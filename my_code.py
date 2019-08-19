@@ -1,5 +1,7 @@
+game_name = 'Friender: Симулятор воображаемого друга'
+alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
 
-print('Friender: Симулятор воображаемого друга')
+print('Добро пожаловать в игру - {}'.format(game_name))
 
 # Необходимые константы
 phrases_about_age = [
@@ -9,75 +11,107 @@ phrases_about_age = [
     ' - Может хватит дурачиться?\n - ',
     ' - Ну скажи!\n - '
 ]
-alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
 robot_answer = ''
-
+temp = ''
 user_info = {
-    'name': input(' - Как тебя зовут?\n - '),
-    'age': 0,
-    'sex': '',
-    'pet_name': '',
-    'gamer': 0,
+    'name': {'question': 'Как тебя зовут?' ,'answer': None},
+    'age': {'question': 'Сколько тебе лет?' ,'answer': 0},
+    'sex': {'question': 'Какого ты пола? (М/Ж)' ,'answer': None},
+    'pet_name': {'question': 'Как зовут твоего питомца?' ,'answer': None},
+    'gamer': {'question': 'Любишь играть? (Да/Нет)','answer': None},
 }
+for itm in user_info:
+    while temp != 'exit':
+        temp = input(' - {}\n - '.format(user_info[itm]['question']))
 
-answer = input(' - Сколько тебе лет?\n - ')
-while not answer.isdigit():
-    answer = input(' - Сколько тебе лет?\n - ')
-user_info['age'] = int(answer)
+        if itm == 'age':
+            if temp.isdigit():
+                user_info[itm]['answer'] = int(temp)
+                break
+            elif temp == 'exit':
+                continue
+            else:
+                print(' * необходимо ввести число\n')
+                continue
+        temp = temp.lower()
+        if itm == 'sex':
+            if temp == 'м' or temp == 'ж':
+                user_info[itm]['answer'] = temp
+            elif temp == 'exit':
+                continue
+            else:
+                print(' * необходимо ввести м или ж\n')
+                continue
+                '''
+                sex = input(' - Какого ты пола? (М/Ж)\n - ')
+                while sex.lower() != 'м' and sex.lower() != 'ж':
 
-sex = input(' - Какого ты пола? (М/Ж)\n - ')
-while sex.lower() != 'м' and sex.lower() != 'ж':
+                    for phrase in phrases_about_age:
+                        sex = input(phrase)
 
-    for phrase in phrases_about_age:
-        sex = input(phrase)
+                        if sex.lower() == 'м' or sex.lower() == 'ж':
+                            user_info['sex'] = sex.upper()
+                            break;
 
-        if sex.lower() == 'м' or sex.lower() == 'ж':
-            user_info['sex'] = sex.upper()
-            break;
+                    if sex.lower() == 'м' or sex.lower() == 'ж':
+                        user_info['sex'] = sex.upper()
+                        break;
+                '''
 
-    if sex.lower() == 'м' or sex.lower() == 'ж':
-        user_info['sex'] = sex.upper()
-        break;
+        elif itm == 'gamer':
+            if temp == 'да':
+                user_info[itm]['answer'] = True
+            elif temp == 'нет':
+                user_info[itm]['answer'] = False
+            elif temp == 'exit':
+                continue
+            else:
+                print(' * необходимо ввести ДА или НЕТ\n')
+                continue
+        else:
+            user_info[itm]['answer'] = temp.title()
+        break
+    if temp == 'exit':
+        break
 
-user_info['pet_name'] = input(' - Как зовут твоего питомца?\n - ')
+# Start the Game
 
-answer = input(' - Любишь играть? (Да/Нет)\n - ')
-while answer.lower() != 'да' and answer.lower() != 'нет':
-    answer = input(' - Любишь играть? (Да/Нет)\n - ')
-user_info['gamer'] = answer.lower() == 'да'
+if user_info['age']['answer'] < 18 and temp != 'exit':
+    print(' - Ты слишком молод. Мама отругает.\n')
 
-if user_info['age'] < 18:
-    print(' - Ты слишком молод. Мама отругает.')
+elif user_info['age']['answer'] > 90 and temp != 'exit':
+    print('{}, для вас в таком возрасте это может быть утомительно!'.format(user_info['name']['answer']))
+    while True:
+        answer = input('Вы уверены, что хотите сыграть в игру? (Да/Нет)\n - ').lower()
 
-elif user_info['age'] > 90:
-    print(' - ' + user_info['name'] + ', для вас в таком возрасте это может быть утомительно!')
-    answer = input('   Вы уверены, что хотите сыграть в игру? (Да/Нет)\n - ')
+        if answer == 'да':
+            answer = input(' - Вы точно уверены, что хотите сыграть в игру? (Да/Нет)\n - ').lower()
+            if answer == 'да':
+              print(' - Хорошо. Начнем игру!')
 
-    if answer == 'Да':
-        answer = input(' - Вы точно уверены, что хотите сыграть в игру? (Да/Нет)\n - ')
+            elif answer == ' нет':
+               print(' - На нет и суда нет. Всего хорошего, '+ user_info['name'] + '!')
 
-        if answer == 'Да':
-            print(' - Хорошо. Начнем игру!')
+            elif temp == 'exit': # Дал ответ ни Да ни Нет
+                break
+            else:
+                pass
+        elif answer == 'нет':
+            print(' - На нет и суда нет. Всего хорошего, ' + user_info['name'] + '!')
 
-        elif answer == 'Нет':
-            print(' - На нет и суда нет. Всего хорошего, '+ user_info['name'] + '!')
-
-        else: #Дал ответ ни Да ни Нет
-            pass;
-    elif answer == 'Нет':
-        print(' - На нет и суда нет. Всего хорошего, ' + user_info['name'] + '!')
-
-    else :#Дал ответ ни Да ни Нет
-        pass
+        elif temp == 'exit':
+            break
+        else:
+            pass
 
 else:
-    print(' - Рад тебя видеть, '+ user_info['name'] + '! Давай назову буквы алфавита, которых нет в твоем имени:')
+    print(' - Рад тебя видеть, {}! Давай назову буквы алфавита, которых нет в твоем '
+          'имени:'.format(user_info['name']['answer']))
     for char_alphabet in alphabet:
-        #for char_name in user_info['name']
-        if (user_info['name'].upper()).find(char_alphabet) + 1:
+        if char_alphabet in user_info['name']['answer'].upper():
             robot_answer += '_'
             continue
         robot_answer += char_alphabet
-    print('   ',robot_answer)
+    print('   ', robot_answer)
     print('   Это все, чему я научился. Подожди немного и увидишь как я вырасту!')
 
